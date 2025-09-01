@@ -1,0 +1,48 @@
+services:
+  calendar-processor:
+    build:
+      context: .
+      dockerfile: Dockerfile.calendar
+    container_name: kobo-calendar-processor
+    restart: unless-stopped
+    volumes:
+      - calendar_data:/app/data
+    environment:
+      - CALENDAR_JSON_PATH=/app/data/calendar.json
+    env_file:
+      - .env
+    healthcheck:
+      test: ["CMD", "python", "-c", "import os; exit(0) if os.path.exists('/app/data/calendar.json') else exit(1)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  screenshot-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.screenshot
+    container_name: kobo-screenshot-service
+    restart: unless-stopped
+    ports:
+      - "3333:3333"
+    volumes:
+      - calendar_data:/app/data
+    environment:
+      - CALENDAR_JSON_PATH=/app/data/calendar.json
+      - PORT=3333
+    env_file:
+      - .env
+    depends_on:
+      calendar-processor:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3333/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+volumes:
+  calendar_data:
+    driver: local
