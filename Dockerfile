@@ -31,4 +31,3 @@ ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
 # 啟動應用 - 使用 package.json 中定義的 start 指令
 CMD ["npm", "start"]
-```
