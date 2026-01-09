@@ -23,11 +23,7 @@ RUN npm install
 # Copy application files
 COPY * ./
 
-# 暴露端口
-EXPOSE 3000
-
 # Set environment variable to tell Puppeteer to use system Chromium
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
-# 啟動應用 - 使用 package.json 中定義的 start 指令
-CMD ["npm", "start"]
+CMD ["node", "render.js"]
