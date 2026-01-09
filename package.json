@@ -1,12 +1,17 @@
 {
   "name": "kobo-dashboard",
-  "version": "1.0.0",
-  "description": "Kobo Dashboard",
-  "main": "screenshot_service.js",
+  "version": "0.1.0",
+  "type": "module",
   "scripts": {
+    "dev": "node screenshot_service.js",
+    "calendar": "python calendar_processor.py",
+    "screenshot": "node screenshot_service.js",
     "start": "node screenshot_service.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "express": "^4.19.2",
+    "puppeteer": "^22.6.3"
+  }
 }
+
